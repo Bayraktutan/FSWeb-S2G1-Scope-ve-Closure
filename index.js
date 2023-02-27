@@ -95,10 +95,17 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 */
 
 function macSonucu(takimSkoru, quarters) {
-  let EvSahibi = takimSkoru() * quarters;
-  let KonukTakim = takimSkoru() * quarters;
+  let finalScore = {
+    EvSahibi: 0,
+    KonukTakim: 0,
+  };
 
-  return { EvSahibi, KonukTakim };
+  for (let i = 1; i <= quarters; i++) {
+    finalScore.EvSahibi = finalScore.EvSahibi + takimSkoru();
+    finalScore.KonukTakim = finalScore.EvSahibi + takimSkoru();
+  }
+
+  return finalScore;
 }
 
 /* Zorlayıcı Görev 4: periyotSkoru()
