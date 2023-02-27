@@ -160,11 +160,11 @@ function skorTabelasi(periyotSkoru, takimSkoru, quarters) {
   for (let i = 1; i <= quarters; i++) {
     let randomForEv = periyotSkoru(takimSkoru).EvSahibi;
     let randomForKonuk = periyotSkoru(takimSkoru).KonukTakim;
+    totalScoreEv += randomForEv;
+    totalScoreKonuk += randomForKonuk;
     someArray.push(
       `${i}. Periyot: Ev Sahibi ${randomForEv} - Konuk Takım ${randomForKonuk}`
     );
-    totalScoreEv += randomForEv;
-    totalScoreKonuk += randomForKonuk;
   }
 
   if (totalScoreEv === totalScoreKonuk) {
@@ -176,13 +176,14 @@ function skorTabelasi(periyotSkoru, takimSkoru, quarters) {
       let randomForKonuk = periyotSkoru(takimSkoru).KonukTakim;
       totalScoreEv += randomForEv;
       totalScoreKonuk += randomForKonuk;
-      someArray.splice(
-        someArray.length - 1,
-        0,
-        `${i}. Uzatma: Ev Sahibi ${randomForEv} - Konuk Takım ${randomForKonuk}`
+      someArray.push(
+        `${i} Uzatma: Ev Sahibi ${randomForEv} - Konuk Takım ${randomForKonuk}`
       );
     }
   }
+  someArray.push(
+    `Maç Sonucu: Ev Sahibi ${totalScoreEv} - Konuk Takım ${totalScoreKonuk}`
+  );
   return someArray;
 }
 console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
