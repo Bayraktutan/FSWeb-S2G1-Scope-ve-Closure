@@ -3,25 +3,29 @@
 // Başlangıç Challenge'ı
 
 /**Örnek Görev: İlkini Dön
- * 
+ *
  * Bu örnek sonradan gelecek olan görevleri nasıl çözeceğinizi size gösterecek.
- * 
+ *
  * Aşağdıaki Yüksek dereceden fonskiyonu(higher-order function) kullanarak aşağıdakileri yapınız
  *  1. Stringlerden oluşan bir array'i parametre olarak alın
- *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın 
+ *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın
  *  3. Array'in İLK elemanını değişken olarak alarak çalışacak olan callback fonksiyonunun sonucunu dönün
- * 
+ *
  * Aşağıdaki kodlar bu görevin nasıl yapılacağına örnek olacaktır
  * Bu fonskiyon 'asas' dönmeli(return)
-*/
+ */
 
 function ilkiniDon(stringArray, callback) {
-  return callback(stringArray[0])
+  return callback(stringArray[0]);
 }
-console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin+metin}));
+console.log(
+  "örnek görev:",
+  ilkiniDon(["as", "sa"], function (metin) {
+    return metin + metin;
+  })
+);
 
 // Başlangıç Challenge'ı Sonu
-
 
 ///// M V P ///////
 
@@ -30,29 +34,36 @@ console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin
   Aşağıdaki skor1 ve skor2 kodlarını inceleyiniz ve aşağıdaki soruları altına not alarak cevaplayın
   
   1. skor1 ve skor2 arasındaki fark nedir?
-  
+
+  skor1'de skorGuncelleme fonksiyonunun skorArtirici fonksiyonunun içerisinde tanımlanması. Dolayısıyla, closure kullanması.
+
   2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin? (yarınki derste öğreneceksin :) )
-  
+
+  İlk fonksiyon closure kullanmaktadır. skor1 skorGuncelle() fonksiyonunu dönmektedir.
+
   3. Hangi durumda skor1 tercih edilebilir? Hangi durumda skor2 daha mantıklıdır?
+ 
+  Performansın önem kazandığı bir durumda skor2'deki gibi global variable olarak skor tanımlamak mantıksız olabilir.
+  Skor hesaplama metoduna bağlı olarak skor1'de sadece skorGuncelle() fonksiyonunu update ederek değişiklik yapabiliriz.
+  skor1'de hesaplama fonksiyonu içeride olduğu için, direkt olarak müdahale edilemez. Hata yönetimi daha kolay olabilir.
+  Bunların önemsiz olduğu her durumda skor2 kullanılabilir
 */
 
 // skor1 kodları
 function skorArtirici() {
   let skor = 0;
   return function skorGuncelle() {
-   return skor++;
-  }
+    return skor++;
+  };
 }
 
 const skor1 = skorArtirici();
-
 // skor2 kodları
 let skor = 0;
 
 function skor2() {
   return skor++;
 }
-
 
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -64,12 +75,9 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru() {
+  return Math.floor(Math.random() * 16) + 10;
 }
-
-
-
 
 /* Görev 3: macSonucu() 
 Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
@@ -84,16 +92,14 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
   "EvSahibi": 92,
   "KonukTakim": 80
 }
-*/ 
+*/
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(takimSkoru, quarters) {
+  let EvSahibi = takimSkoru() * quarters;
+  let KonukTakim = takimSkoru() * quarters;
+
+  return { EvSahibi, KonukTakim };
 }
-
-
-
-
-
 
 /* Zorlayıcı Görev 4: periyotSkoru()
 Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -108,12 +114,12 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
 }
   */
 
+function periyotSkoru(takimSkoru) {
+  let EvSahibi = takimSkoru();
+  let KonukTakim = takimSkoru();
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
-
+  return { EvSahibi, KonukTakim };
 }
-
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -146,17 +152,45 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoru, takimSkoru, quarters) {
+  let someArray = [];
+  let totalScoreEv = 0;
+  let totalScoreKonuk = 0;
+
+  for (let i = 1; i <= quarters; i++) {
+    let randomForEv = periyotSkoru(takimSkoru).EvSahibi;
+    let randomForKonuk = periyotSkoru(takimSkoru).KonukTakim;
+    someArray.push(
+      `${i}. Periyot: Ev Sahibi ${randomForEv} - Konuk Takım ${randomForKonuk}`
+    );
+    totalScoreEv += randomForEv;
+    totalScoreKonuk += randomForKonuk;
+  }
+
+  if (totalScoreEv === totalScoreKonuk) {
+    for (let i = 1; i <= 1000; i++) {
+      if (totalScoreEv !== totalScoreKonuk) {
+        break;
+      }
+      let randomForEv = periyotSkoru(takimSkoru).EvSahibi;
+      let randomForKonuk = periyotSkoru(takimSkoru).KonukTakim;
+      totalScoreEv += randomForEv;
+      totalScoreKonuk += randomForKonuk;
+      someArray.splice(
+        someArray.length - 1,
+        0,
+        `${i}. Uzatma: Ev Sahibi ${randomForEv} - Konuk Takım ${randomForKonuk}`
+      );
+    }
+  }
+  return someArray;
 }
-
-
-
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
-function sa(){
-  console.log('Kodlar çalışıyor');
-  return 'as';
+function sa() {
+  console.log("Kodlar çalışıyor");
+  return "as";
 }
 sa();
 module.exports = {
@@ -168,4 +202,4 @@ module.exports = {
   macSonucu,
   periyotSkoru,
   skorTabelasi,
-}
+};
